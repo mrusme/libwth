@@ -7,21 +7,25 @@ import (
 )
 
 type CfgModule struct {
-  Enabled                bool
+  ID                     string
   Name                   string
   Path                   string
+  Enabled                bool
   Config                 map[string]string
-  Position               struct {
-    Top                  int
-    Left                 int
-    Height               int
-    Width                int
-  }
   RefreshInterval        string
 }
 
 type Cfg struct {
   Modules                []CfgModule
+  Layout                 struct {
+    Rows                 []struct {
+      Cells              []struct {
+        ModuleID         string
+        RatioX           int
+        RatioY           int
+      }
+    }
+  }
   Theme                  struct {
     ModuleBorderColor    string
   }
