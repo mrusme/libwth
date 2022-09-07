@@ -1,9 +1,12 @@
 package libwth
 
 import (
-  "strings"
+	"fmt"
+	"reflect"
+	"strings"
 
-  "github.com/spf13/viper"
+	"github.com/ryankurte/go-structparse"
+	"github.com/spf13/viper"
 )
 
 type CfgModule struct {
@@ -15,21 +18,46 @@ type CfgModule struct {
   RefreshInterval        string
 }
 
+type CfgThemeBasics struct {
+  TextColor              string
+  BackgroundColor        string
+  BorderColor            string
+}
+
 type CfgTheme struct {
-  Base                   struct {
-    TextColor            string
-    BackgroundColor      string
-    BorderColor          string
+  Colors                 struct {
+    Primary              string
+    Secondary            string
+    Success              string
+    Danger               string
+    Warning              string
+    Info                 string
+    Light                string
+    Dark                 string
+    Muted                string
+    White                string
+    Black                string
   }
-  Button                 struct {
-    TextColor            string
-    BackgroundColor      string
-    BorderColor          string
-  }
-  Module                 struct {
-    TextColor            string
-    BackgroundColor      string
-    BorderColor          string
+  Defaults               struct {
+    Base                   CfgThemeBasics
+    H1                     CfgThemeBasics
+    H2                     CfgThemeBasics
+    H3                     CfgThemeBasics
+    H4                     CfgThemeBasics
+    H5                     CfgThemeBasics
+    P                      CfgThemeBasics
+    Label                  CfgThemeBasics
+    Button                 struct {
+                          CfgThemeBasics
+      Hover                CfgThemeBasics
+    }
+    Module                 struct {
+      TextColor              string
+      BackgroundColor        string
+      BorderColor            string
+      Hover                CfgThemeBasics
+      Active               CfgThemeBasics
+    }
   }
 }
 
@@ -48,15 +76,56 @@ type Cfg struct {
 }
 
 func NewCfg() (Cfg, error) {
-  viper.SetDefault("Theme.Base.TextColor", "#FFFFFF")
-  viper.SetDefault("Theme.Base.BackgroundColor", "")
-  viper.SetDefault("Theme.Base.BorderColor", "#FFFFFF")
-  viper.SetDefault("Theme.Button.TextColor", "#FFFFFF")
-  viper.SetDefault("Theme.Button.BackgroundColor", "")
-  viper.SetDefault("Theme.Button.BorderColor", "#FFFFFF")
-  viper.SetDefault("Theme.Module.TextColor", "#FFFFFF")
-  viper.SetDefault("Theme.Module.BackgroundColor", "")
-  viper.SetDefault("Theme.Module.BorderColor", "#FFFFFF")
+  viper.SetDefault("Theme.Colors.Primary", "#007BFF")
+  viper.SetDefault("Theme.Colors.Secondary", "#6C757D")
+  viper.SetDefault("Theme.Colors.Success", "#28A745")
+  viper.SetDefault("Theme.Colors.Danger", "#DC3545")
+  viper.SetDefault("Theme.Colors.Warning", "#FFC107")
+  viper.SetDefault("Theme.Colors.Info", "#17A2B8")
+  viper.SetDefault("Theme.Colors.Light", "#F8F9FA")
+  viper.SetDefault("Theme.Colors.Dark", "#343A40")
+  viper.SetDefault("Theme.Colors.Muted", "#6C757D")
+  viper.SetDefault("Theme.Colors.White", "#FFFFFF")
+  viper.SetDefault("Theme.Colors.Black", "#000000")
+  viper.SetDefault("Theme.Defaults.Base.TextColor", "$white")
+  viper.SetDefault("Theme.Defaults.Base.BackgroundColor", "")
+  viper.SetDefault("Theme.Defaults.Base.BorderColor", "$primary")
+  viper.SetDefault("Theme.Defaults.H1.TextColor", "$white")
+  viper.SetDefault("Theme.Defaults.H1.BackgroundColor", "")
+  viper.SetDefault("Theme.Defaults.H1.BorderColor", "")
+  viper.SetDefault("Theme.Defaults.H2.TextColor", "$white")
+  viper.SetDefault("Theme.Defaults.H2.BackgroundColor", "")
+  viper.SetDefault("Theme.Defaults.H2.BorderColor", "")
+  viper.SetDefault("Theme.Defaults.H3.TextColor", "$white")
+  viper.SetDefault("Theme.Defaults.H3.BackgroundColor", "")
+  viper.SetDefault("Theme.Defaults.H3.BorderColor", "")
+  viper.SetDefault("Theme.Defaults.H4.TextColor", "$white")
+  viper.SetDefault("Theme.Defaults.H4.BackgroundColor", "")
+  viper.SetDefault("Theme.Defaults.H4.BorderColor", "")
+  viper.SetDefault("Theme.Defaults.H5.TextColor", "$white")
+  viper.SetDefault("Theme.Defaults.H5.BackgroundColor", "")
+  viper.SetDefault("Theme.Defaults.H5.BorderColor", "")
+  viper.SetDefault("Theme.Defaults.P.TextColor", "$white")
+  viper.SetDefault("Theme.Defaults.P.BackgroundColor", "")
+  viper.SetDefault("Theme.Defaults.P.BorderColor", "")
+  viper.SetDefault("Theme.Defaults.Label.TextColor", "$white")
+  viper.SetDefault("Theme.Defaults.Label.BackgroundColor", "")
+  viper.SetDefault("Theme.Defaults.Label.BorderColor", "")
+  viper.SetDefault("Theme.Defaults.Button.TextColor", "$white")
+  viper.SetDefault("Theme.Defaults.Button.BackgroundColor", "$secondary")
+  viper.SetDefault("Theme.Defaults.Button.BorderColor", "")
+  viper.SetDefault("Theme.Defaults.Button.Hover.TextColor", "$white")
+  viper.SetDefault("Theme.Defaults.Button.Hover.BackgroundColor", "$primary")
+  viper.SetDefault("Theme.Defaults.Button.Hover.BorderColor", "")
+  viper.SetDefault("Theme.Defaults.Module.TextColor", "$white")
+  viper.SetDefault("Theme.Defaults.Module.BackgroundColor", "")
+  viper.SetDefault("Theme.Defaults.Module.BorderColor", "$secondary")
+  viper.SetDefault("Theme.Defaults.Module.Hover.TextColor", "$white")
+  viper.SetDefault("Theme.Defaults.Module.Hover.BackgroundColor", "")
+  viper.SetDefault("Theme.Defaults.Module.Hover.BorderColor", "$primary")
+  viper.SetDefault("Theme.Defaults.Module.Active.TextColor", "$white")
+  viper.SetDefault("Theme.Defaults.Module.Active.BackgroundColor", "")
+  viper.SetDefault("Theme.Defaults.Module.Active.BorderColor", "$success")
 
   viper.SetConfigName("wth.yaml")
   viper.SetConfigType("yaml")
@@ -66,9 +135,11 @@ func NewCfg() (Cfg, error) {
   viper.AddConfigPath("$HOME/")
   viper.AddConfigPath(".")
 
+  /*
   viper.SetEnvPrefix("wth")
   viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
   viper.AutomaticEnv()
+  */
 
   if err := viper.ReadInConfig(); err != nil {
     if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
@@ -81,6 +152,25 @@ func NewCfg() (Cfg, error) {
     return Cfg{}, err
   }
 
+  structparse.Strings(&config, &config.Theme.Defaults)
+
   return config, nil
+}
+
+func (cfg *Cfg) ParseString(val string) interface{} {
+  if strings.HasPrefix(val, "$") {
+    valueOfColors := reflect.ValueOf(cfg.Theme.Colors)
+    varName := strings.ToLower(strings.TrimLeft(val, "$"))
+    varName = fmt.Sprintf(
+      "%s%s",
+      strings.ToUpper(string(varName[0])),
+      varName[1:],
+    )
+    colorValue := reflect.Indirect(valueOfColors).FieldByName(varName)
+    colorValueString := colorValue.String()
+    return colorValueString
+  }
+
+  return val
 }
 

@@ -24,7 +24,7 @@ func NewCtx(config *Cfg, id string) (*Ctx, error) {
   }
   if ctx.Module == nil {
     return nil, errors.New(
-      fmt.Sprint(
+      fmt.Sprintf(
         "No module configuration with ID %s available!",
         id,
       ),
