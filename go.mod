@@ -28,6 +28,9 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.13.0 // indirect
 	github.com/subosito/gotenv v1.4.1 // indirect
+	go.uber.org/atomic v1.10.0 // indirect
+	go.uber.org/multierr v1.8.0 // indirect
+	go.uber.org/zap v1.23.0 // indirect
 	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
 	golang.org/x/text v0.3.7 // indirect

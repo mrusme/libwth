@@ -1,12 +1,10 @@
 package libwth
 
 import (
-	"github.com/charmbracelet/lipgloss"
+  "github.com/charmbracelet/lipgloss"
 )
 
-func DefaultModuleViewStyle(ctx *Ctx) (lipgloss.Style) {
-  t := ctx.Theme()
-
+func DefaultModuleViewStyle(t *CfgTheme) (lipgloss.Style) {
   return lipgloss.NewStyle().
     Margin(0, 0, 0, 0).
     Padding(1, 1).

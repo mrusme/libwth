@@ -1,12 +1,12 @@
 package libwth
 
 import (
-	"fmt"
-	"reflect"
-	"strings"
+  "fmt"
+  "reflect"
+  "strings"
 
-	"github.com/ryankurte/go-structparse"
-	"github.com/spf13/viper"
+  "github.com/ryankurte/go-structparse"
+  "github.com/spf13/viper"
 )
 
 type CfgModule struct {
@@ -73,6 +73,10 @@ type Cfg struct {
     }
   }
   Theme                  CfgTheme
+  Log                    struct {
+    File                 string
+    Level                string
+  }
 }
 
 func NewCfg() (Cfg, error) {
@@ -126,6 +130,8 @@ func NewCfg() (Cfg, error) {
   viper.SetDefault("Theme.Defaults.Module.Active.TextColor", "$white")
   viper.SetDefault("Theme.Defaults.Module.Active.BackgroundColor", "")
   viper.SetDefault("Theme.Defaults.Module.Active.BorderColor", "$success")
+
+  viper.SetDefault("Logfile", "wth.log")
 
   viper.SetConfigName("wth.yaml")
   viper.SetConfigType("yaml")

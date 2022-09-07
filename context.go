@@ -3,19 +3,27 @@ package libwth
 import (
   "errors"
   "fmt"
+
+  "go.uber.org/zap"
 )
 
 type Ctx struct {
   config       *Cfg
   moduleID     string
   Module       *CfgModule
+  Log          *zap.SugaredLogger
 }
 
-func NewCtx(config *Cfg, id string) (*Ctx, error) {
+func NewCtx(
+  config *Cfg,
+  id string,
+  log *zap.SugaredLogger,
+) (*Ctx, error) {
   ctx := new(Ctx)
   ctx.config = config
   ctx.moduleID = id
   ctx.Module = nil
+  ctx.Log = log
   for i := 0; i < len(ctx.config.Modules); i++ {
     if ctx.config.Modules[i].ID == id {
       ctx.Module = &ctx.config.Modules[i]
