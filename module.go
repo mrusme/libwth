@@ -9,5 +9,8 @@ type Module interface {
   Update(msg tea.Msg) (tea.Model, tea.Cmd)
 }
 
-type NewModule func(*Ctx) (*Module, error)
+type ModuleResizeEvent struct {
+  Width  int
+  Height int
+}
 
