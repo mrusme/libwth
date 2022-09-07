@@ -15,6 +15,24 @@ type CfgModule struct {
   RefreshInterval        string
 }
 
+type CfgTheme struct {
+  Base                   struct {
+    TextColor            string
+    BackgroundColor      string
+    BorderColor          string
+  }
+  Button                 struct {
+    TextColor            string
+    BackgroundColor      string
+    BorderColor          string
+  }
+  Module                 struct {
+    TextColor            string
+    BackgroundColor      string
+    BorderColor          string
+  }
+}
+
 type Cfg struct {
   Modules                []CfgModule
   Layout                 struct {
@@ -26,13 +44,19 @@ type Cfg struct {
       }
     }
   }
-  Theme                  struct {
-    ModuleBorderColor    string
-  }
+  Theme                  CfgTheme
 }
 
 func NewCfg() (Cfg, error) {
-  viper.SetDefault("Theme.ModuleBorderColor", "#FFFFFF")
+  viper.SetDefault("Theme.Base.TextColor", "#FFFFFF")
+  viper.SetDefault("Theme.Base.BackgroundColor", "")
+  viper.SetDefault("Theme.Base.BorderColor", "#FFFFFF")
+  viper.SetDefault("Theme.Button.TextColor", "#FFFFFF")
+  viper.SetDefault("Theme.Button.BackgroundColor", "")
+  viper.SetDefault("Theme.Button.BorderColor", "#FFFFFF")
+  viper.SetDefault("Theme.Module.TextColor", "#FFFFFF")
+  viper.SetDefault("Theme.Module.BackgroundColor", "")
+  viper.SetDefault("Theme.Module.BorderColor", "#FFFFFF")
 
   viper.SetConfigName("wth.yaml")
   viper.SetConfigType("yaml")

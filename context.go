@@ -7,17 +7,17 @@ import (
 
 type Ctx struct {
   config       *Cfg
-  ModulePath   string
+  moduleID     string
   Module       *CfgModule
 }
 
-func NewCtx(config *Cfg, path string) (*Ctx, error) {
+func NewCtx(config *Cfg, id string) (*Ctx, error) {
   ctx := new(Ctx)
   ctx.config = config
-  ctx.ModulePath = path
+  ctx.moduleID = id
   ctx.Module = nil
   for i := 0; i < len(ctx.config.Modules); i++ {
-    if ctx.config.Modules[i].Path == path {
+    if ctx.config.Modules[i].ID == id {
       ctx.Module = &ctx.config.Modules[i]
       break
     }
@@ -25,13 +25,25 @@ func NewCtx(config *Cfg, path string) (*Ctx, error) {
   if ctx.Module == nil {
     return nil, errors.New(
       fmt.Sprint(
-        "No module configuration with path %s available!",
-        path,
+        "No module configuration with ID %s available!",
+        id,
       ),
     )
   }
-  ctx.ModulePath = path
+  ctx.moduleID = id
 
   return ctx, nil
+}
+
+func (ctx *Ctx) ConfigValue(key string) (string) {
+  if val, ok := ctx.Module.Config[key]; ok {
+    return val
+  }
+
+  return ""
+}
+
+func (ctx *Ctx) Theme() (*CfgTheme) {
+  return &ctx.config.Theme
 }
 
