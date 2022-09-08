@@ -1,4 +1,4 @@
-package libwth
+package module
 
 import (
   "time"

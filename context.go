@@ -4,18 +4,20 @@ import (
   "errors"
   "fmt"
 
+  "github.com/mrusme/libwth/cfg"
+  "github.com/mrusme/libwth/theme"
   "go.uber.org/zap"
 )
 
 type Ctx struct {
-  config       *Cfg
+  config       *cfg.Cfg
   moduleID     string
-  Module       *CfgModule
+  Module       *cfg.CfgModule
   Log          *zap.SugaredLogger
 }
 
 func NewCtx(
-  config *Cfg,
+  config *cfg.Cfg,
   id string,
   log *zap.SugaredLogger,
 ) (*Ctx, error) {
@@ -51,7 +53,7 @@ func (ctx *Ctx) ConfigValue(key string) (string) {
   return ""
 }
 
-func (ctx *Ctx) Theme() (*CfgTheme) {
+func (ctx *Ctx) Theme() (*theme.Theme) {
   return &ctx.config.Theme
 }
 

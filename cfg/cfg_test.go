@@ -1,4 +1,4 @@
-package libwth
+package cfg
 
 import (
   "testing"

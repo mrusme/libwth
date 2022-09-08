@@ -1,10 +1,11 @@
-package libwth
+package cfg
 
 import (
   "fmt"
   "reflect"
   "strings"
 
+  "github.com/mrusme/libwth/theme"
   "github.com/ryankurte/go-structparse"
   "github.com/spf13/viper"
 )
@@ -18,49 +19,6 @@ type CfgModule struct {
   RefreshInterval        string
 }
 
-type CfgThemeBasics struct {
-  TextColor              string
-  BackgroundColor        string
-  BorderColor            string
-}
-
-type CfgTheme struct {
-  Colors                 struct {
-    Primary              string
-    Secondary            string
-    Success              string
-    Danger               string
-    Warning              string
-    Info                 string
-    Light                string
-    Dark                 string
-    Muted                string
-    White                string
-    Black                string
-  }
-  Defaults               struct {
-    Base                   CfgThemeBasics
-    H1                     CfgThemeBasics
-    H2                     CfgThemeBasics
-    H3                     CfgThemeBasics
-    H4                     CfgThemeBasics
-    H5                     CfgThemeBasics
-    P                      CfgThemeBasics
-    Label                  CfgThemeBasics
-    Button                 struct {
-                          CfgThemeBasics
-      Hover                CfgThemeBasics
-    }
-    Module                 struct {
-      TextColor              string
-      BackgroundColor        string
-      BorderColor            string
-      Hover                CfgThemeBasics
-      Active               CfgThemeBasics
-    }
-  }
-}
-
 type Cfg struct {
   Modules                []CfgModule
   Layout                 struct {
@@ -72,7 +30,7 @@ type Cfg struct {
       }
     }
   }
-  Theme                  CfgTheme
+  Theme                  theme.Theme
   Log                    struct {
     File                 string
     Level                string
@@ -131,7 +89,8 @@ func NewCfg() (Cfg, error) {
   viper.SetDefault("Theme.Defaults.Module.Active.BackgroundColor", "")
   viper.SetDefault("Theme.Defaults.Module.Active.BorderColor", "$success")
 
-  viper.SetDefault("Logfile", "wth.log")
+  viper.SetDefault("Log.File", "wth.log")
+  viper.SetDefault("Log.Level", "info")
 
   viper.SetConfigName("wth.yaml")
   viper.SetConfigType("yaml")
