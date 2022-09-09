@@ -57,7 +57,9 @@ func (t *Theme) DefaultStyle(
   margin [4]int,
 ) (lipgloss.Style) {
   s := lipgloss.NewStyle().
-    Foreground(lipgloss.Color(fg))
+    Foreground(lipgloss.Color(fg)).
+    Padding(padding[0], padding[1], padding[2], padding[3]).
+    Margin(margin[0], margin[1], margin[2], margin[3])
 
   if bg != "" {
     s = s.Background(lipgloss.Color(bg))
@@ -72,8 +74,6 @@ func (t *Theme) DefaultStyle(
       BorderLeft(true).
       BorderRight(true).
       BorderBottom(true).
-      Padding(padding[0], padding[1], padding[2], padding[3]).
-      Margin(margin[0], margin[1], margin[2], margin[3])
   }
 
   return s
