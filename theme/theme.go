@@ -34,7 +34,9 @@ type Theme struct {
     P                      ThemeBasics
     Label                  ThemeBasics
     Button                 struct {
-                           ThemeBasics
+      TextColor            string
+      BackgroundColor      string
+      BorderColor          string
       Hover                ThemeBasics
     }
     Module                 struct {
@@ -47,14 +49,14 @@ type Theme struct {
   }
 }
 
-func (t *Theme) defaultStyle(
+func (t *Theme) DefaultStyle(
   fg string,
   bg string,
   bd string,
+  padding [4]int,
+  margin [4]int,
 ) (lipgloss.Style) {
   s := lipgloss.NewStyle().
-    Margin(0, 0, 0, 0).
-    Padding(1, 1).
     Foreground(lipgloss.Color(fg))
 
   if bg != "" {
@@ -69,198 +71,248 @@ func (t *Theme) defaultStyle(
       BorderTop(true).
       BorderLeft(true).
       BorderRight(true).
-      BorderBottom(true)
+      BorderBottom(true).
+      Padding(padding[0], padding[1], padding[2], padding[3]).
+      Margin(margin[0], margin[1], margin[2], margin[3])
   }
 
   return s
 }
 
 func (t *Theme) DefaultBaseStyle() (lipgloss.Style) {
-  return t.defaultStyle(
+  return t.DefaultStyle(
     t.Defaults.Base.TextColor,
     t.Defaults.Base.BackgroundColor,
     t.Defaults.Base.BorderColor,
+    [4]int{0, 0, 0, 0},
+    [4]int{0, 0, 0, 0},
   )
 }
 
 func (t *Theme) DefaultH1Style() (lipgloss.Style) {
-  return t.defaultStyle(
+  return t.DefaultStyle(
     t.Defaults.H1.TextColor,
     t.Defaults.H1.BackgroundColor,
     t.Defaults.H1.BorderColor,
+    [4]int{0, 0, 0, 0},
+    [4]int{1, 0, 1, 0},
   )
 }
 
 func (t *Theme) DefaultH2Style() (lipgloss.Style) {
-  return t.defaultStyle(
+  return t.DefaultStyle(
     t.Defaults.H2.TextColor,
     t.Defaults.H2.BackgroundColor,
     t.Defaults.H2.BorderColor,
+    [4]int{0, 0, 0, 0},
+    [4]int{1, 0, 1, 0},
   )
 }
 
 func (t *Theme) DefaultH3Style() (lipgloss.Style) {
-  return t.defaultStyle(
+  return t.DefaultStyle(
     t.Defaults.H3.TextColor,
     t.Defaults.H3.BackgroundColor,
     t.Defaults.H3.BorderColor,
+    [4]int{0, 0, 0, 0},
+    [4]int{1, 0, 1, 0},
   )
 }
 
 func (t *Theme) DefaultH4Style() (lipgloss.Style) {
-  return t.defaultStyle(
+  return t.DefaultStyle(
     t.Defaults.H4.TextColor,
     t.Defaults.H4.BackgroundColor,
     t.Defaults.H4.BorderColor,
+    [4]int{0, 0, 0, 0},
+    [4]int{1, 0, 1, 0},
   )
 }
 
 func (t *Theme) DefaultH5Style() (lipgloss.Style) {
-  return t.defaultStyle(
+  return t.DefaultStyle(
     t.Defaults.H5.TextColor,
     t.Defaults.H5.BackgroundColor,
     t.Defaults.H5.BorderColor,
+    [4]int{0, 0, 0, 0},
+    [4]int{1, 0, 1, 0},
   )
 }
 
 func (t *Theme) DefaultPStyle() (lipgloss.Style) {
-  return t.defaultStyle(
+  return t.DefaultStyle(
     t.Defaults.P.TextColor,
     t.Defaults.P.BackgroundColor,
     t.Defaults.P.BorderColor,
+    [4]int{0, 0, 0, 0},
+    [4]int{0, 0, 0, 0},
   )
 }
 
 func (t *Theme) DefaultLabelStyle() (lipgloss.Style) {
-  return t.defaultStyle(
+  return t.DefaultStyle(
     t.Defaults.Label.TextColor,
     t.Defaults.Label.BackgroundColor,
     t.Defaults.Label.BorderColor,
+    [4]int{0, 0, 0, 0},
+    [4]int{0, 0, 0, 0},
   )
 }
 
 func (t *Theme) DefaultButtonStyle() (lipgloss.Style) {
-  return t.defaultStyle(
+  return t.DefaultStyle(
     t.Defaults.Button.TextColor,
     t.Defaults.Button.BackgroundColor,
     t.Defaults.Button.BorderColor,
+    [4]int{1, 4, 1, 4},
+    [4]int{1, 2, 1, 2},
   )
 }
 func (t *Theme) DefaultButtonHoverStyle() (lipgloss.Style) {
-  return t.defaultStyle(
+  return t.DefaultStyle(
     t.Defaults.Button.Hover.TextColor,
     t.Defaults.Button.Hover.BackgroundColor,
     t.Defaults.Button.Hover.BorderColor,
+    [4]int{1, 4, 1, 4},
+    [4]int{1, 2, 1, 2},
   )
 }
 
 func (t *Theme) DefaultModuleViewStyle() (lipgloss.Style) {
-  return t.defaultStyle(
+  return t.DefaultStyle(
     t.Defaults.Module.TextColor,
     t.Defaults.Module.BackgroundColor,
     t.Defaults.Module.BorderColor,
+    [4]int{1, 1, 1, 1},
+    [4]int{0, 0, 0, 0},
   )
 }
 func (t *Theme) DefaultModuleHoverViewStyle() (lipgloss.Style) {
-  return t.defaultStyle(
+  return t.DefaultStyle(
     t.Defaults.Module.Hover.TextColor,
     t.Defaults.Module.Hover.BackgroundColor,
     t.Defaults.Module.Hover.BorderColor,
+    [4]int{1, 1, 1, 1},
+    [4]int{0, 0, 0, 0},
   )
 }
 func (t *Theme) DefaultModuleActiveViewStyle() (lipgloss.Style) {
-  return t.defaultStyle(
+  return t.DefaultStyle(
     t.Defaults.Module.Active.TextColor,
     t.Defaults.Module.Active.BackgroundColor,
     t.Defaults.Module.Active.BorderColor,
+    [4]int{1, 1, 1, 1},
+    [4]int{0, 0, 0, 0},
   )
 }
 
 func (t *Theme) DefaultTextPrimaryStyle() (lipgloss.Style) {
-  s := lipgloss.NewStyle().
-    Foreground(lipgloss.Color(
-      t.Colors.Primary))
-
-  return s
+  return t.DefaultStyle(
+    t.Colors.Primary,
+    "",
+    "",
+    [4]int{0, 0, 0, 0},
+    [4]int{0, 0, 0, 0},
+  )
 }
 
 func (t *Theme) DefaultTextSecondaryStyle() (lipgloss.Style) {
-  s := lipgloss.NewStyle().
-    Foreground(lipgloss.Color(
-      t.Colors.Secondary))
-
-  return s
+  return t.DefaultStyle(
+    t.Colors.Secondary,
+    "",
+    "",
+    [4]int{0, 0, 0, 0},
+    [4]int{0, 0, 0, 0},
+  )
 }
 
 func (t *Theme) DefaultTextSuccessStyle() (lipgloss.Style) {
-  s := lipgloss.NewStyle().
-    Foreground(lipgloss.Color(
-      t.Colors.Success))
-
-  return s
+  return t.DefaultStyle(
+    t.Colors.Success,
+    "",
+    "",
+    [4]int{0, 0, 0, 0},
+    [4]int{0, 0, 0, 0},
+  )
 }
 
 func (t *Theme) DefaultTextDangerStyle() (lipgloss.Style) {
-  s := lipgloss.NewStyle().
-    Foreground(lipgloss.Color(
-      t.Colors.Danger))
-
-  return s
+  return t.DefaultStyle(
+    t.Colors.Danger,
+    "",
+    "",
+    [4]int{0, 0, 0, 0},
+    [4]int{0, 0, 0, 0},
+  )
 }
 
 func (t *Theme) DefaultTextWarningStyle() (lipgloss.Style) {
-  s := lipgloss.NewStyle().
-    Foreground(lipgloss.Color(
-      t.Colors.Warning))
-
-  return s
+  return t.DefaultStyle(
+    t.Colors.Warning,
+    "",
+    "",
+    [4]int{0, 0, 0, 0},
+    [4]int{0, 0, 0, 0},
+  )
 }
 
 func (t *Theme) DefaultTextInfoStyle() (lipgloss.Style) {
-  s := lipgloss.NewStyle().
-    Foreground(lipgloss.Color(
-      t.Colors.Info))
-
-  return s
+  return t.DefaultStyle(
+    t.Colors.Info,
+    "",
+    "",
+    [4]int{0, 0, 0, 0},
+    [4]int{0, 0, 0, 0},
+  )
 }
 
 func (t *Theme) DefaultTextLightStyle() (lipgloss.Style) {
-  s := lipgloss.NewStyle().
-    Foreground(lipgloss.Color(
-      t.Colors.Light))
-
-  return s
+  return t.DefaultStyle(
+    t.Colors.Light,
+    "",
+    "",
+    [4]int{0, 0, 0, 0},
+    [4]int{0, 0, 0, 0},
+  )
 }
 
 func (t *Theme) DefaultTextDarkStyle() (lipgloss.Style) {
-  s := lipgloss.NewStyle().
-    Foreground(lipgloss.Color(
-      t.Colors.Dark))
-
-  return s
+  return t.DefaultStyle(
+    t.Colors.Dark,
+    "",
+    "",
+    [4]int{0, 0, 0, 0},
+    [4]int{0, 0, 0, 0},
+  )
 }
 
 func (t *Theme) DefaultTextMutedStyle() (lipgloss.Style) {
-  s := lipgloss.NewStyle().
-    Foreground(lipgloss.Color(
-      t.Colors.Muted))
-
-  return s
+  return t.DefaultStyle(
+    t.Colors.Muted,
+    "",
+    "",
+    [4]int{0, 0, 0, 0},
+    [4]int{0, 0, 0, 0},
+  )
 }
 
 func (t *Theme) DefaultTextWhiteStyle() (lipgloss.Style) {
-  s := lipgloss.NewStyle().
-    Foreground(lipgloss.Color(
-      t.Colors.White))
-
-  return s
+  return t.DefaultStyle(
+    t.Colors.White,
+    "",
+    "",
+    [4]int{0, 0, 0, 0},
+    [4]int{0, 0, 0, 0},
+  )
 }
 
 func (t *Theme) DefaultTextBlackStyle() (lipgloss.Style) {
-  s := lipgloss.NewStyle().
-    Foreground(lipgloss.Color(
-      t.Colors.Black))
-
-  return s
+  return t.DefaultStyle(
+    t.Colors.Black,
+    "",
+    "",
+    [4]int{0, 0, 0, 0},
+    [4]int{0, 0, 0, 0},
+  )
 }
 
