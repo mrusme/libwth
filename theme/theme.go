@@ -47,27 +47,25 @@ type Theme struct {
   }
 }
 
-
-
-func (t *Theme) DefaultModuleViewStyle() (lipgloss.Style) {
+func (t *Theme) defaultStyle(
+  fg string,
+  bg string,
+  bd string,
+) (lipgloss.Style) {
   s := lipgloss.NewStyle().
     Margin(0, 0, 0, 0).
     Padding(1, 1).
-    Foreground(lipgloss.Color(
-      t.Defaults.Module.TextColor))
+    Foreground(lipgloss.Color(fg))
 
-  if t.Defaults.Module.BackgroundColor != "" {
-    s = s.Background(lipgloss.Color(
-      t.Defaults.Module.BackgroundColor))
-    if t.Defaults.Module.BorderColor != "" {
-      s = s.BorderBackground(lipgloss.Color(
-        t.Defaults.Base.BackgroundColor))
+  if bg != "" {
+    s = s.Background(lipgloss.Color(bg))
+    if bd != "" {
+      s = s.BorderBackground(lipgloss.Color(bg))
     }
   }
-  if t.Defaults.Module.BorderColor != "" {
+  if bd != "" {
     s = s.Border(lipgloss.RoundedBorder()).
-      BorderForeground(lipgloss.Color(
-        t.Defaults.Module.BorderColor)).
+      BorderForeground(lipgloss.Color(bd)).
       BorderTop(true).
       BorderLeft(true).
       BorderRight(true).
@@ -77,30 +75,105 @@ func (t *Theme) DefaultModuleViewStyle() (lipgloss.Style) {
   return s
 }
 
+func (t *Theme) DefaultBaseStyle() (lipgloss.Style) {
+  return t.defaultStyle(
+    t.Defaults.Base.TextColor,
+    t.Defaults.Base.BackgroundColor,
+    t.Defaults.Base.BorderColor,
+  )
+}
+
+func (t *Theme) DefaultH1Style() (lipgloss.Style) {
+  return t.defaultStyle(
+    t.Defaults.H1.TextColor,
+    t.Defaults.H1.BackgroundColor,
+    t.Defaults.H1.BorderColor,
+  )
+}
+
+func (t *Theme) DefaultH2Style() (lipgloss.Style) {
+  return t.defaultStyle(
+    t.Defaults.H2.TextColor,
+    t.Defaults.H2.BackgroundColor,
+    t.Defaults.H2.BorderColor,
+  )
+}
+
+func (t *Theme) DefaultH3Style() (lipgloss.Style) {
+  return t.defaultStyle(
+    t.Defaults.H3.TextColor,
+    t.Defaults.H3.BackgroundColor,
+    t.Defaults.H3.BorderColor,
+  )
+}
+
+func (t *Theme) DefaultH4Style() (lipgloss.Style) {
+  return t.defaultStyle(
+    t.Defaults.H4.TextColor,
+    t.Defaults.H4.BackgroundColor,
+    t.Defaults.H4.BorderColor,
+  )
+}
+
+func (t *Theme) DefaultH5Style() (lipgloss.Style) {
+  return t.defaultStyle(
+    t.Defaults.H5.TextColor,
+    t.Defaults.H5.BackgroundColor,
+    t.Defaults.H5.BorderColor,
+  )
+}
+
+func (t *Theme) DefaultPStyle() (lipgloss.Style) {
+  return t.defaultStyle(
+    t.Defaults.P.TextColor,
+    t.Defaults.P.BackgroundColor,
+    t.Defaults.P.BorderColor,
+  )
+}
+
 func (t *Theme) DefaultLabelStyle() (lipgloss.Style) {
-  s := lipgloss.NewStyle().
-    Foreground(lipgloss.Color(
-      t.Defaults.Label.TextColor))
+  return t.defaultStyle(
+    t.Defaults.Label.TextColor,
+    t.Defaults.Label.BackgroundColor,
+    t.Defaults.Label.BorderColor,
+  )
+}
 
-  if t.Defaults.Label.BackgroundColor != "" {
-    s = s.Background(lipgloss.Color(
-      t.Defaults.Label.BackgroundColor))
-    if t.Defaults.Label.BorderColor != "" {
-      s = s.BorderBackground(lipgloss.Color(
-        t.Defaults.Base.BackgroundColor))
-    }
-  }
-  if t.Defaults.Label.BorderColor != "" {
-    s = s.Border(lipgloss.RoundedBorder()).
-      BorderForeground(lipgloss.Color(
-        t.Defaults.Label.BorderColor)).
-      BorderTop(true).
-      BorderLeft(true).
-      BorderRight(true).
-      BorderBottom(true)
-  }
+func (t *Theme) DefaultButtonStyle() (lipgloss.Style) {
+  return t.defaultStyle(
+    t.Defaults.Button.TextColor,
+    t.Defaults.Button.BackgroundColor,
+    t.Defaults.Button.BorderColor,
+  )
+}
+func (t *Theme) DefaultButtonHoverStyle() (lipgloss.Style) {
+  return t.defaultStyle(
+    t.Defaults.Button.Hover.TextColor,
+    t.Defaults.Button.Hover.BackgroundColor,
+    t.Defaults.Button.Hover.BorderColor,
+  )
+}
 
-  return s
+func (t *Theme) DefaultModuleViewStyle() (lipgloss.Style) {
+  return t.defaultStyle(
+    t.Defaults.Module.TextColor,
+    t.Defaults.Module.BackgroundColor,
+    t.Defaults.Module.BorderColor,
+  )
+}
+func (t *Theme) DefaultModuleHoverViewStyle() (lipgloss.Style) {
+  return t.defaultStyle(
+    t.Defaults.Module.Hover.TextColor,
+    t.Defaults.Module.Hover.BackgroundColor,
+    t.Defaults.Module.Hover.BorderColor,
+  )
+}
+func (t *Theme) DefaultModuleActiveViewStyle() (lipgloss.Style) {
+  return t.defaultStyle(
+    t.Defaults.Module.Active.TextColor,
+    t.Defaults.Module.Active.BackgroundColor,
+    t.Defaults.Module.Active.BorderColor,
+  )
 }
 
 func (t *Theme) DefaultTextPrimaryStyle() (lipgloss.Style) {
