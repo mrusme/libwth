@@ -1,28 +1,28 @@
 package module
 
 import (
-  "time"
-  tea "github.com/charmbracelet/bubbletea"
+	"time"
+
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 type Module interface {
-  View() (string)
-  Update(msg tea.Msg) (tea.Model, tea.Cmd)
+	View() string
+	Update(msg tea.Msg) (tea.Model, tea.Cmd)
 }
 
 type ModuleResizeEvent struct {
-  Width  int
-  Height int
+	Width  int
+	Height int
 }
 
 type HeartbeatMsg struct {
-  Now    time.Time
+	Now time.Time
 }
 
-func (hb *HeartbeatMsg) IsDueNow(nextUpdate time.Time) (bool) {
-  if hb.Now.Unix() >= nextUpdate.Unix() {
-    return true
-  }
-  return false
+func (hb *HeartbeatMsg) IsDueNow(nextUpdate time.Time) bool {
+	if hb.Now.Unix() >= nextUpdate.Unix() {
+		return true
+	}
+	return false
 }
-
